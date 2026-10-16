@@ -1,4 +1,8 @@
+import librosa
+import numpy as np
+
 class AudioPipeline:
+ 
     """Loads an audio file and extracts features from it, frame by frame.
 
     Both load() and get_features() are stubs you must implement yourself —
@@ -11,11 +15,12 @@ class AudioPipeline:
         self.file_path = file_path
         self.sample_rate = sample_rate
 
-    def load(self) -> None:
-        """Load the audio file at self.file_path via librosa, at
-        self.sample_rate, and store the resulting signal on the instance.
-        """
-        raise NotImplementedError
+    def load(self, path: str, sr: int = 22050) -> np.ndarray:
+            signal, _ = librosa.load(path, sr=sr)
+            self.signal = signal
+            self.sample_rate = sr
+            return signal 
+    
 
     def get_features(self) -> dict:
         """Extract numerical features (amplitude at minimum) from the current

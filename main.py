@@ -4,7 +4,7 @@ ENGINE and AUDIO_FILE are fixed, version-controlled choices, not runtime
 options — committing to one engine tier and one audio file is a project
 decision, not something to toggle per run.
 """
-
+import math 
 from collections.abc import Callable
 
 from audio.pipeline import AudioPipeline
@@ -17,7 +17,7 @@ from engines.pyglet_engine import PygletEngine
 # how/why this is a one-time project decision, not a runtime toggle.
 ENGINE: type[BaseEngine] = PygameEngine
 
-AUDIO_FILE = "audio/track.wav"
+AUDIO_FILE = "C:\\Users\\2502780\\Desktop\\CLASS-2a-template-project\\audio\\ytmp3free.cc_neffex-free-me-copyright-free-no134-youtubemp3free.org.mp3"
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
 WINDOW_TITLE = "CLASS-2a Project"
@@ -65,7 +65,21 @@ def run_full_app():
 
     pipeline = AudioPipeline(file_path=AUDIO_FILE)
     try:
-        pipeline.load()
+        pipeline.load(path=AUDIO_FILE, sr=22050)
+        signalsample = pipeline.signal[3072:4096] 
+        highest = max(signalsample)
+        print(highest)
+        signalsamplelist = []
+        addsample = 0
+        for i in signalsample:
+            iSquared = i*i
+            signalsamplelist.append(iSquared)
+        for i in signalsamplelist:
+            addsample += i
+        dividedsample = addsample / len(signalsample)
+        print(math.sqrt(dividedsample))
+                    
+
         feature_source = tolerate_not_implemented(pipeline.get_features)
     except NotImplementedError:
         print(NOT_IMPLEMENTED_MESSAGE)
@@ -76,3 +90,6 @@ def run_full_app():
 
 if __name__ == "__main__":
     run_full_app()
+
+
+
