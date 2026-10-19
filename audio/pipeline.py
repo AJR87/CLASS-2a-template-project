@@ -1,6 +1,6 @@
 import librosa
 import numpy as np
-
+import math
 class AudioPipeline:
  
     """Loads an audio file and extracts features from it, frame by frame.
@@ -14,19 +14,34 @@ class AudioPipeline:
     def __init__(self, file_path: str, sample_rate: int = 22050) -> None:
         self.file_path = file_path
         self.sample_rate = sample_rate
+        self.window_size = 1024
+        self.position = 0
 
-    def load(self, path: str, sr: int = 22050) -> np.ndarray:
-            signal, _ = librosa.load(path, sr=sr)
+    def load(self) -> np.ndarray:
+            signal, _ = librosa.load(self.file_path, sr=self.sample_rate)
             self.signal = signal
-            self.sample_rate = sr
             return signal 
     
+    def RMS(self, windowChunk):
+        
+        windowSquared = np.square(windowChunk)
+        windowMean = np.mean(windowSquared)
+        windowRoot = np.sqrt(windowMean)
+        return windowRoot
+        
+    #    signalsamplelist = []
+    #    addsample = 0
+    #    for i in signalsample:
+    #        iSquared = i*i
+    #        signalsamplelist.append(iSquared)
+    #    for i in signalsamplelist:
+    #        addsample += i
+    #    dividedsample = addsample / len(signalsample)
+    #    return (math.sqrt(dividedsample))
 
     def get_features(self) -> dict:
-        """Extract numerical features (amplitude at minimum) from the current
-        window of the loaded signal, advance the pipeline's internal read
-        position accordingly, and return them as a dict[str, float].
-
-        This return value is passed directly into engine.update().
-        """
-        raise NotImplementedError
+            windowChunk = self.signal[self.position:self.position + self.window_size]
+            Data = {"amplitude": self.RMS(windowChunk)}
+            self.position += self.window_size
+            # print(Data)
+            return Data
