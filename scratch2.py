@@ -13,17 +13,22 @@ pipelineInstance.position = ((len(pipelineInstance.signal) +1 ) / 2)
 
 window = pipelineInstance.signal[int(pipelineInstance.position): (int(pipelineInstance.position) + 1024)]
 currentWindow = (window * np.hanning(1024))
-spectrum = np.fft.rfft(currentWindow)
-spectrum_frequency = np.fft.fftfreq(len(currentWindow), 22050)
+print(currentWindow)
+
+currentWindowWithout = (window)
+print(currentWindowWithout)
+
+spectrum = np.fft.rfft(currentWindowWithout)
+spectrum_frequency = np.fft.fftfreq(len(currentWindowWithout), 22050)
 # print(len(spectrum))
 # print(spectrum[0])
 # print(spectrum[512])
 # print(abs(spectrum))
 
-print(f"this is the maximum index in the loud part {np.argmax(abs(spectrum))}")
+print(f"this is the maximum index in the loud part: {np.argmax(abs(spectrum))}")
 maxindex = np.argmax(abs(spectrum))
 maxfreq = spectrum_frequency[maxindex]
-print(f"this is the frequency of the maximum index in the loud spectrum {maxfreq}")
+print(f"this is the frequency of the maximum index in the loud spectrum: {maxfreq}")
 
 
 
@@ -40,10 +45,10 @@ spectrum_frequency = np.fft.fftfreq(len(currentWindow), 22050)
 # print(spectrum[512])
 # print(abs(spectrum))
 
-print(f"this is the maximum index in the quiet part {np.argmax(abs(spectrum))}")
+print(f"this is the maximum index in the quiet part: {np.argmax(abs(spectrum))}")
 maxindex = np.argmax(abs(spectrum))
 maxfreq = spectrum_frequency[maxindex]
-print(f"this is the frequency of the maximum index in the quiet spectrum {maxfreq}")
+print(f"this is the frequency of the maximum index in the quiet spectrum: {maxfreq}")
 
 pipelineInstance.position = ((len(pipelineInstance.signal) +1 ) / 2)
 #print(pipelineInstance.position)
@@ -56,8 +61,8 @@ spectrum_frequency = np.fft.fftfreq(len(currentWindow), 22050)
 # print(spectrum[0])
 # print(spectrum[512])
 # print(abs(spectrum))
-
-print(f"this is the maximum index {np.argmax(abs(spectrum))}")
+print(spectrum_frequency[maxindex])
+print(f"this is the maximum index: {np.argmax(abs(spectrum))}")
 maxindex = np.argmax(abs(spectrum))
 maxfreq = spectrum_frequency[maxindex]
-print(f"this is the frequency of the maximum index in the spectrum {maxfreq}")
+print(f"this is the frequency of the maximum index in the spectrum: {maxfreq}")
