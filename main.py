@@ -17,7 +17,7 @@ from engines.pyglet_engine import PygletEngine
 # how/why this is a one-time project decision, not a runtime toggle.
 ENGINE: type[BaseEngine] = PygameEngine
 
-AUDIO_FILE = "C:\\Users\\2502780\\Desktop\\CLASS-2a-template-project\\audio\\ytmp3free.cc_neffex-free-me-copyright-free-no134-youtubemp3free.org.mp3"
+AUDIO_FILE = "C:\Users\2502780\Documents\GitHub\CLASS-2a-template-project\audio\ytmp3free.cc_neffex-free-me-copyright-free-no134-youtubemp3free.org.mp3"
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
 WINDOW_TITLE = "CLASS-2a Project"

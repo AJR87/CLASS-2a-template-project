@@ -41,7 +41,23 @@ class AudioPipeline:
 
     def get_features(self) -> dict:
             windowChunk = self.signal[self.position:self.position + self.window_size]
-            Data = {"amplitude": self.RMS(windowChunk)}
+            spectrum = np.fft.rfft(windowChunk)
+            spectrum_frequency = np.fft.fftfreq(len(windowChunk), 22050)
+            bassBins = spectrum[1 : 5]
+            midBins = spectrum[6 : 95]
+            trebleBins = spectrum[95 : 513]
+
+            y, sr = librosa.load(AUDIO_FILE)
+            cent = librosa.feature.spectral_centroid(y=y, sr = sr)
+
+            bassTotal = sum(abs(bassBins))
+            midTotal = sum(abs(midBins))
+            trebleTotal = sum(abs(trebleBins))
+            Data = {"amplitude": self.RMS(windowChunk),
+                    "bass": bassTotal,
+                    "mid": midTotal,
+                    "treble": trebleTotal,
+                    "cent": cent}
             self.position += self.window_size
             # print(Data)
             return Data
