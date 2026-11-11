@@ -47,8 +47,7 @@ class AudioPipeline:
             midBins = spectrum[6 : 95]
             trebleBins = spectrum[95 : 513]
 
-            y, sr = librosa.load(AUDIO_FILE)
-            cent = librosa.feature.spectral_centroid(y=y, sr = sr)
+            cent = np.mean(librosa.feature.spectral_centroid(y=windowChunk, sr = 22050))
 
             bassTotal = sum(abs(bassBins))
             midTotal = sum(abs(midBins))
@@ -59,5 +58,4 @@ class AudioPipeline:
                     "treble": trebleTotal,
                     "cent": cent}
             self.position += self.window_size
-            # print(Data)
             return Data
