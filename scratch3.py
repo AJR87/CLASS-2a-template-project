@@ -23,52 +23,74 @@ bassList = []
 midList = []
 trebleList = []
 centList = []
+onsetList = []
 
-
-for i in range(0 , len(pipelineInstance.signal), 1024):
+for i in range((len(pipelineInstance.signal) // pipelineInstance.window_size)):
     data = pipelineInstance.get_features()
     amp = data["amplitude"]
     ampList.append(amp)
 
+    bass = data["bass"]
+    bassList.append(bass)
+
+    mid = data["mid"]
+    midList.append(mid)
+
+    treble = data["treble"]
+    trebleList.append(treble)
+
+    cent = data["cent"]
+    centList.append(cent)
+
+    onset = data["onset"]
+    onsetList.append(onset)
+
+
 ampRange = (max(ampList) - min(ampList))
 print(ampRange) 
 
-pipelineInstance.position = 0
+# pipelineInstance.position = 0
 
-for i in range(0 , len(pipelineInstance.signal), 1024):
-    data = pipelineInstance.get_features()
-    bass = data["bass"]
-    bassList.append(bass)
+# for i in range(0 , len(pipelineInstance.signal), 1024):
+#     data = pipelineInstance.get_features()
+#     bass = data["bass"]
+#     bassList.append(bass)
 
 bassRange = (max(bassList) - min(bassList))
 print(bassRange) 
 
-pipelineInstance.position = 0
+# pipelineInstance.position = 0
 
-for i in range(0 , len(pipelineInstance.signal), 1024):
-    data = pipelineInstance.get_features()
-    mid = data["mid"]
-    midList.append(mid)
+# for i in range(0 , (len(pipelineInstance.signal) // AudioPipeline.window_size), 1024):
+#     data = pipelineInstance.get_features()
+#     mid = data["mid"]
+#     midList.append(mid)
 
 midRange = (max(midList) - min(midList))
 print(midRange)
+# print(f"midlist{len(midList)}")
 
-pipelineInstance.position = 0
+# pipelineInstance.position = 0
 
-for i in range(0 , len(pipelineInstance.signal), 1024):
-    data = pipelineInstance.get_features()
-    treble = data["treble"]
-    trebleList.append(treble)
+# for i in range(0 , len(pipelineInstance.signal), 1024):
+#     data = pipelineInstance.get_features()
+#     treble = data["treble"]
+#     trebleList.append(treble)
 
 trebleRange = (max(trebleList) - min(trebleList))
 print(trebleRange) 
 
-pipelineInstance.position = 0
+# pipelineInstance.position = 0
 
-for i in range(0 , len(pipelineInstance.signal), 1024):
-    data = pipelineInstance.get_features()
-    cent = data["cent"]
-    centList.append(cent)
+# for i in range(0 , len(pipelineInstance.signal), 1024):
+#     data = pipelineInstance.get_features()
+#     cent = data["cent"]
+#     centList.append(cent)
 
 centRange = (max(centList) - min(centList))
 print(centRange) 
+
+onsetRange = (max(onsetList) - min(onsetList))
+print(onsetRange)
+
+print(len(ampList))

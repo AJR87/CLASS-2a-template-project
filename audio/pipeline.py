@@ -16,6 +16,7 @@ class AudioPipeline:
         self.sample_rate = sample_rate
         self.window_size = 1024
         self.position = 0
+        self.prevMag = np.zeros(512)
 
     def load(self) -> np.ndarray:
             signal, _ = librosa.load(self.file_path, sr=self.sample_rate)
@@ -38,11 +39,35 @@ class AudioPipeline:
     #        addsample += i
     #    dividedsample = addsample / len(signalsample)
     #    return (math.sqrt(dividedsample))
-
+    
+    
     def get_features(self) -> dict:
+            
+            # sets the window chunk to start from self.postion in the spectrum and finish at that same postion + the self.window_size 
+            # which is set at the top of the class
             windowChunk = self.signal[self.position:self.position + self.window_size]
-            spectrum = np.fft.rfft(windowChunk)
+            
+            # creates the bins using hanning so that they dont have sharp edges and slowly rise and lower to and from 0
+            spectrum = np.fft.rfft(windowChunk * np.hanning(len(windowChunk)))
             spectrum_frequency = np.fft.fftfreq(len(windowChunk), 22050)
+            
+            # this is how we calculate the onset. onset is the difference between the previous window and the current one
+            # i set the previous window to start with an empty array of 0s that is 513 long so that python can run my code without it being ambigous
+            # set the current magnitude to all the bins and uses the abs to remove the complex number
+            currentMag = abs(spectrum)
+            # sets onset total to 0 before the loop so that it doesnt repeatedly get put to 0 every run
+            onsetTotal = 0
+            # the loop runs for the length of magnitude so that it can compare each bin 
+            for i in range(len(currentMag)):
+                difference = currentMag[i] - self.prevMag[i]
+            # only updates onset if it is a positive number and if it isnt the first in the spectrum because the first spectrum isnt acurate andm messes up results
+                if difference > 0 and self.position != 0:
+                    # adds difference to onset
+                    onsetTotal += difference
+            # sets self.prevMag to current mag ready for next set of bins we use self. so that it can be remembered even after the function ends
+            self.prevMag = currentMag     
+            
+            
             bassBins = spectrum[1 : 5]
             midBins = spectrum[6 : 95]
             trebleBins = spectrum[95 : 513]
@@ -56,6 +81,7 @@ class AudioPipeline:
                     "bass": bassTotal,
                     "mid": midTotal,
                     "treble": trebleTotal,
-                    "cent": cent}
+                    "cent": cent,
+                    "onset" : onsetTotal}
             self.position += self.window_size
             return Data
