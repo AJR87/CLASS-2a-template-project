@@ -16,7 +16,7 @@ class AudioPipeline:
         self.sample_rate = sample_rate
         self.window_size = 1024
         self.position = 0
-        self.prevMag = np.zeros(512)
+        self.prevMag = np.zeros(513)
 
     def load(self) -> np.ndarray:
             signal, _ = librosa.load(self.file_path, sr=self.sample_rate)
@@ -42,11 +42,17 @@ class AudioPipeline:
     
     
     def get_features(self) -> dict:
+
+            
+            
             
             # sets the window chunk to start from self.postion in the spectrum and finish at that same postion + the self.window_size 
             # which is set at the top of the class
             windowChunk = self.signal[self.position:self.position + self.window_size]
             
+            # this will stop the app from crashing when it runs out of windows to generate
+            if len(windowChunk) < self.window_size:
+                return {"amplitude": 0, "bass": 0, "mid": 0, "treble": 0, "cent": 0, "onset": 0}
             # creates the bins using hanning so that they dont have sharp edges and slowly rise and lower to and from 0
             spectrum = np.fft.rfft(windowChunk * np.hanning(len(windowChunk)))
             spectrum_frequency = np.fft.fftfreq(len(windowChunk), 22050)
@@ -67,16 +73,20 @@ class AudioPipeline:
             # sets self.prevMag to current mag ready for next set of bins we use self. so that it can be remembered even after the function ends
             self.prevMag = currentMag     
             
-            
+            # setting features to the correct bins in the spectrum
             bassBins = spectrum[1 : 5]
-            midBins = spectrum[6 : 95]
+            midBins = spectrum[6 : 95]  
             trebleBins = spectrum[95 : 513]
 
+            # usingh built in librosa centroid function so that we can calculate the centroid we use np.mean because it gives 3 numbers and we only want to log 1 in our dictionary
             cent = np.mean(librosa.feature.spectral_centroid(y=windowChunk, sr = 22050))
 
+            # calculating the sum of all the magnitudes in each array and
             bassTotal = sum(abs(bassBins))
             midTotal = sum(abs(midBins))
             trebleTotal = sum(abs(trebleBins))
+
+            # creating the dictionare to store all the values in
             Data = {"amplitude": self.RMS(windowChunk),
                     "bass": bassTotal,
                     "mid": midTotal,
