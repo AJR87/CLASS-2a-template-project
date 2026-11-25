@@ -10,7 +10,7 @@ contract while filling in engine-specific behaviour.
 import time
 from abc import ABC, abstractmethod
 from collections.abc import Callable
-import pygame
+
 
 # Shared across all three stub engines so the "blank window" baseline looks
 # the same regardless of which tier a student has chosen.
@@ -23,13 +23,11 @@ class BaseEngine(ABC):
         self.height = height
         self.title = title
         self.target_fps = target_fps
-        self.color = (255,0,0)
-        self.rect = (50, 50, 50, 50)
-        self.surface = pygame.display.set_mode((400, 300))
+        
     @abstractmethod
     def setup(self) -> None:
-        # """Create the window/rendering context. Called once, before the loop starts."""
-        self.surface
+        """Create the window/rendering context. Called once, before the loop starts."""
+
     @abstractmethod
     def handle_events(self) -> bool:
         """Poll input/window events for this frame.
@@ -60,7 +58,7 @@ class BaseEngine(ABC):
             running = True
             while running:
                 frame_start = time.perf_counter()
-                pygame.draw.rect(self.surface, self.color, self.rect, width=0)
+                
                 running = self.handle_events()
                 if not running:
                     break

@@ -49,7 +49,7 @@ class PygameEngine(BaseEngine):
         self.smoothing = 10
         
         self.barWidth = 50
-        self.slotSize = self.barWidth / 6
+        self.slotSize = self.width / 6
 
 
         self.font = pygame.font.SysFont(None, 24)
@@ -165,27 +165,27 @@ class PygameEngine(BaseEngine):
 
         pygame.draw.rect(self.screen, self.dataMinMax["amplitude"]["color"], pygame.Rect(int(self.slotSize * 1 - self.barWidth / 2),600 -int(self.dataMinMax["amplitude"]["smooth"] * 300) ,self.barWidth,int(self.dataMinMax["amplitude"]["smooth"] * 300)))
         text = self.font.render("amplitude", True, (255,255,255))
-        self.screen.blit(text, (100, 610) )
+        self.screen.blit(text, (int(self.slotSize * 1 - text.get_width() / 2), 610) )
        
-        pygame.draw.rect(self.screen, self.dataMinMax["bass"]["color"], pygame.Rect(250,600 -int(self.dataMinMax["bass"]["smooth"] * 300) ,self.barWidth,int(self.dataMinMax["bass"]["smooth"] * 300)))
+        pygame.draw.rect(self.screen, self.dataMinMax["bass"]["color"], pygame.Rect(int(self.slotSize * 2 - self.barWidth / 2),600 -int(self.dataMinMax["bass"]["smooth"] * 300) ,self.barWidth,int(self.dataMinMax["bass"]["smooth"] * 300)))
 
         text = self.font.render("bass", True, (255,255,255))
-        self.screen.blit(text, (250, 610) )
+        self.screen.blit(text, (int(self.slotSize * 2 - text.get_width() / 2), 610) )
 
 
-        pygame.draw.rect(self.screen, self.dataMinMax["mid"]["color"], pygame.Rect(400,600 -int(self.dataMinMax["mid"]["smooth"] * 300) ,self.barWidth,int(self.dataMinMax["mid"]["smooth"] * 300)))
+        pygame.draw.rect(self.screen, self.dataMinMax["mid"]["color"], pygame.Rect(int(self.slotSize * 3 - self.barWidth / 2),600 -int(self.dataMinMax["mid"]["smooth"] * 300) ,self.barWidth,int(self.dataMinMax["mid"]["smooth"] * 300)))
 
         text = self.font.render("mid", True, (255,255,255))
-        self.screen.blit(text, (400, 610) )
+        self.screen.blit(text, (int(self.slotSize * 3 - text.get_width() / 2), 610) )
 
 
-        pygame.draw.rect(self.screen, self.dataMinMax["treble"]["color"], pygame.Rect(550,600 -int(self.dataMinMax["treble"]["smooth"] * 300) ,self.barWidth,int(self.dataMinMax["treble"]["smooth"] * 300)))
+        pygame.draw.rect(self.screen, self.dataMinMax["treble"]["color"], pygame.Rect(int(self.slotSize * 4 - self.barWidth / 2),600 -int(self.dataMinMax["treble"]["smooth"] * 300) ,self.barWidth,int(self.dataMinMax["treble"]["smooth"] * 300)))
         text = self.font.render("treble", True, (255,255,255))
-        self.screen.blit(text, (550, 610) )
+        self.screen.blit(text, (int(self.slotSize * 4 - text.get_width() / 2), 610) )
 
-        pygame.draw.rect(self.screen, self.dataMinMax["cent"]["color"], pygame.Rect(700,600 -int(self.dataMinMax["cent"]["smooth"] * 300) ,self.barWidth,int(self.dataMinMax["cent"]["smooth"] * 300)))
+        pygame.draw.rect(self.screen, self.dataMinMax["cent"]["color"], pygame.Rect(int(self.slotSize * 5 - self.barWidth / 2),600 -int(self.dataMinMax["cent"]["smooth"] * 300) ,self.barWidth,int(self.dataMinMax["cent"]["smooth"] * 300)))
         text = self.font.render("cent", True, (255,255,255))
-        self.screen.blit(text, (700, 610) )
+        self.screen.blit(text, (int(self.slotSize * 5 - text.get_width() / 2), 610) )
         
         
         
