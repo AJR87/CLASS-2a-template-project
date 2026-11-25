@@ -163,11 +163,22 @@ class PygameEngine(BaseEngine):
     def render(self) -> None:
         self.screen.fill(BACKGROUND_COLOR)
 
-        pygame.draw.rect(self.screen, self.dataMinMax["amplitude"]["color"], pygame.Rect(int(self.slotSize * 1 - self.barWidth / 2),600 -int(self.dataMinMax["amplitude"]["smooth"] * 300) ,self.barWidth,int(self.dataMinMax["amplitude"]["smooth"] * 300)))
-        text = self.font.render("amplitude", True, (255,255,255))
+        # the rectangles color is different depending on what i have put in the dictionary in self.dataMinMax
+        # the x axis of where each bar is on the screen is dependant on the width of the screen and is calculated by multiplying the slot size by what slot the bar will fit into and subtracting that by the width of the bar divided by two so that the center of the bar is at the evenly spaced slots on the screen
+        # the y axis of where each bar is on the screen is set 600 subtract to the value of smooth multiplied by 300 due to the way that pygame calculates the y axis
+        # the width the bar is set to self.barWidth and can be changed in setup()
+        # the height of the actual bar is set to smooth multiplied by 300 and since pygame calculates it downwards it extends to 600
+
+        pygame.draw.rect(self.screen, self.dataMinMax["amplitude"]["color"], pygame.Rect(int(self.slotSize * 1 - self.barWidth / 2),600 - int(self.dataMinMax["amplitude"]["smooth"] * 300) ,self.barWidth,int(self.dataMinMax["amplitude"]["smooth"] * 300)))
+
+        # text is set to the name of the value that is being recorded and true means it has smooth edges and the value at the end is the color of the text 
+        # 
+
+        text = self.font.render("amplitude", False, (255,255,255))
         self.screen.blit(text, (int(self.slotSize * 1 - text.get_width() / 2), 610) )
+
        
-        pygame.draw.rect(self.screen, self.dataMinMax["bass"]["color"], pygame.Rect(int(self.slotSize * 2 - self.barWidth / 2),600 -int(self.dataMinMax["bass"]["smooth"] * 300) ,self.barWidth,int(self.dataMinMax["bass"]["smooth"] * 300)))
+        pygame.draw.rect(self.screen, self.dataMinMax["bass"]["color"], pygame.Rect(int(self.slotSize * 2 - self.barWidth / 2),600 - int(self.dataMinMax["bass"]["smooth"] * 300) ,self.barWidth,int(self.dataMinMax["bass"]["smooth"] * 300)))
 
         text = self.font.render("bass", True, (255,255,255))
         self.screen.blit(text, (int(self.slotSize * 2 - text.get_width() / 2), 610) )
