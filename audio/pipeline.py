@@ -2,6 +2,7 @@ import librosa
 import numpy as np
 import math
 import time
+import pygame 
 class AudioPipeline:
  
     """Loads an audio file and extracts features from it, frame by frame.
@@ -20,6 +21,7 @@ class AudioPipeline:
         self.position = 0
         self.prevMag = np.zeros(513)
         self.lastTime = time.perf_counter()
+        self.musicPosition = 0
 
     def load(self) -> np.ndarray:
             signal, _ = librosa.load(self.file_path, sr=self.sample_rate)
@@ -49,6 +51,11 @@ class AudioPipeline:
             currentTime = time.perf_counter()
             deltaTime = min(currentTime - self.lastTime, 1)
             self.lastTime = currentTime
+
+            
+            self.musicPosition = max(0, pygame.mixer.music.get_pos() / 1000 )
+            self.position = (self.sample_rate * self.musicPosition)  % len(self.signal)
+
             
             # sets the window chunk to start from self.postion in the spectrum and finish at that same postion + the self.window_size 
             # which is set at the top of the class
@@ -99,5 +106,4 @@ class AudioPipeline:
                     "onset" : onsetTotal}
             
             
-            self.position += (self.sample_rate * deltaTime)
             return Data

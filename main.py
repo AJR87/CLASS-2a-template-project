@@ -17,7 +17,7 @@ from engines.pyglet_engine import PygletEngine
 # how/why this is a one-time project decision, not a runtime toggle.
 ENGINE: type[BaseEngine] = PygameEngine
 
-AUDIO_FILE = "/Users/ajr/Documents/CLASS-2a-template-project/audio/ytmp3free.cc_neffex-free-me-copyright-free-no134-youtubemp3free.org.mp3"
+AUDIO_FILE = "audio/ytmp3free.cc_neffex-free-me-copyright-free-no134-youtubemp3free.org.mp3"
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
 WINDOW_TITLE = "CLASS-2a Project"
@@ -59,9 +59,11 @@ def tolerate_not_implemented(get_features: Callable[[], dict]) -> Callable[[], d
 
     return feature_source
 
+# error handling using the try except rule to stop corrupted or invalid files from crashing my code
 
 def run_full_app():
     engine = ENGINE(width=WINDOW_WIDTH, height=WINDOW_HEIGHT, title=WINDOW_TITLE, target_fps=TARGET_FPS)
+    engine.audioFile = AUDIO_FILE
 
     pipeline = AudioPipeline(file_path=AUDIO_FILE)
     try:
@@ -70,6 +72,12 @@ def run_full_app():
     except NotImplementedError:
         print(NOT_IMPLEMENTED_MESSAGE)
         feature_source = lambda: {}
+    except FileNotFoundError:
+        print("Audio file not found: " + AUDIO_FILE)
+        return
+    except Exception:
+        print("Invalid file type or file may be corrupted: " + AUDIO_FILE)
+        return
 
     engine.run(feature_source=feature_source)
 
