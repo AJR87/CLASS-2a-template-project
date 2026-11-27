@@ -109,6 +109,7 @@ class PygameEngine(BaseEngine):
         pygame.mixer.music.load(self.audioFile)
         
         pygame.display.set_caption(self.title)
+        print("setup done")
 
     # this is where im binding the arrow keys to the. background color using the pygame syntax that i found in the documentation
     
